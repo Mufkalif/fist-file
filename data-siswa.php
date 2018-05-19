@@ -3,10 +3,23 @@
 require "config/functions.php";
 
 $id = $_GET["id"];
-
-$siswa = tampil_data("SELECT * FROM tbl_siswa WHERE id_sekolah ='$id'");
 $sekolah = tampil_data("SELECT * FROM tbl_sekolah WHERE id_sekolah ='$id'");
 
+if(isset($_POST["btn_cari"])) {
+
+  $keywords = $_POST["keywords"];
+
+  $query = "SELECT * FROM tbl_siswa where
+              nama LIKE '%$keywords%' OR
+              nis LIKE '%$keywords%' OR
+              jenis_kelamin LIKE '%$keywords%' OR
+              email LIKE '%$keywords%'";
+
+  $siswa = tampil_data($query);
+} else {
+  $siswa = tampil_data("SELECT * FROM tbl_siswa WHERE id_sekolah ='$id'");
+}
+  
  ?>
 
 
@@ -45,9 +58,11 @@ $sekolah = tampil_data("SELECT * FROM tbl_sekolah WHERE id_sekolah ='$id'");
       <li><a href="#">Profile</a></li>
       <li><a href="#">Help</a></li>
     </ul>
-	    <form class="navbar-form navbar-right">
-	        <input type="text" class="form-control" placeholder="Search...">
-	    </form>
+      <form class="navbar-form navbar-right" method="post" action="">
+         <input type="text" value="<?php echo $sklh["id_sekolah"]; ?>" name="id_keywords">
+	       <input type="text" class="form-control" name="keywords" placeholder="Search...">
+	       <button type="submit" name="btn_cari" class="btn btn-primary">Cari</button>
+      </form>
 	  </div>
 	</div>
 </div>
